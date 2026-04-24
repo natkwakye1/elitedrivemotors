@@ -57,7 +57,7 @@ export default function AdminFleetPage() {
   const totalRented  = Object.values(FLEET_DATA).filter(f => f.status === "Rented").length;
   const totalService = Object.values(FLEET_DATA).filter(f => f.status === "In Service").length;
 
-  const selFleet = selected ? (FLEET_DATA[selected.id] ?? DEFAULT_FLEET_ENTRY) : null;
+  const selFleet: FleetEntry = selected ? (FLEET_DATA[selected.id] ?? DEFAULT_FLEET_ENTRY) : DEFAULT_FLEET_ENTRY;
   const selColor = selFleet ? STATUS_COLOR[selFleet.status] : "#10B981";
 
   return (
