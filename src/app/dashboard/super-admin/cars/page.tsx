@@ -20,6 +20,7 @@ import type { CarPin } from "@/src/components/tracking/LeafletMap";
 const LeafletMap = dynamic(() => import("@/src/components/tracking/LeafletMap"), { ssr: false });
 
 import { FLEET_DATA, DEFAULT_FLEET_ENTRY } from "@/src/lib/data/fleet";
+import type { FleetEntry } from "@/src/lib/data/fleet";
 
 const STATUS_COLOR: Record<string, string> = {
   Available:    "#10B981",
