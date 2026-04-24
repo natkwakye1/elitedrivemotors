@@ -1,0 +1,20 @@
+// ─── src/lib/data/cars.ts ─────────────────────────────────────────────────────
+// Static mock car data.
+// Replace with API calls via src/services/carService.ts in production.
+
+import { Car } from "@/src/types/car";
+
+export const CARS: Car[] = [
+  { id:1,  name:"Audi A4",           spec:"2.0 TFSI Sport (249 hp, Quattro)",       price:24.59, rating:4.7, reviews:109, dist:"120m", walkMin:4,  type:"Sedan",    fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&q=80" },
+  { id:2,  name:"Opel Insignia",     spec:"2.0 Turbo Grand Sport (230 hp, AWD)",    price:19.99, rating:4.0, reviews:87,  dist:"250m", walkMin:8,  type:"Sedan",    fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" },
+  { id:3,  name:"Mini Countryman",   spec:"Cooper S ALL4 (189 hp, AWD)",            price:28.50, rating:4.9, reviews:142, dist:"180m", walkMin:5,  type:"Crossover",fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1546614042-7df3c24c9e5d?w=600&q=80" },
+  { id:4,  name:"Mazda 6",           spec:"2.5 Turbo Premium (250 hp, AWD)",        price:22.99, rating:5.0, reviews:766, dist:"90m",  walkMin:3,  type:"Sedan",    fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80", favourite:true },
+  { id:5,  name:"Cadillac Escalade", spec:"6.2L V8 Platinum (420 hp, 4WD)",        price:35.00, rating:4.6, reviews:64,  dist:"320m", walkMin:10, type:"SUV",      fuel:"Gasoline", transmission:"Automatic", seats:7, image:"https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=600&q=80" },
+  { id:6,  name:"Ford Focus ST",     spec:"2.3 EcoBoost (280 hp, FWD)",            price:26.75, rating:4.7, reviews:156, dist:"140m", walkMin:5,  type:"Hatchback",fuel:"Gasoline", transmission:"Manual",    seats:5, image:"https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80" },
+  { id:7,  name:"Tesla Model S",     spec:"Long Range (670 hp, AWD)",              price:45.00, rating:4.1, reviews:298, dist:"200m", walkMin:6,  type:"Sedan",    fuel:"Electric", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=80" },
+  { id:8,  name:"Mazda 3 Hatchback", spec:"2.5 Skyactiv-G Select (186 hp, FWD)",   price:21.99, rating:5.0, reviews:987, dist:"150m", walkMin:5,  type:"Hatchback",fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1585011664466-b7bbe92f34ef?w=600&q=80", favourite:true },
+  { id:9,  name:"VW Tiguan",         spec:"2.0 TSI R-Line (184 hp, 4Motion)",      price:31.50, rating:4.6, reviews:134, dist:"280m", walkMin:9,  type:"Crossover",fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1606611013016-969c19ba27bb?w=600&q=80" },
+  { id:10, name:"BMW 3 Series",      spec:"330i xDrive (255 hp, AWD)",             price:38.00, rating:4.8, reviews:211, dist:"110m", walkMin:4,  type:"Sedan",    fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" },
+  { id:11, name:"Mercedes C-Class",  spec:"C300 AMG Line (255 hp, 4MATIC)",        price:42.00, rating:4.9, reviews:189, dist:"412m", walkMin:15, type:"Sedan",    fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80" },
+  { id:12, name:"Porsche Macan",     spec:"Macan S (348 hp, AWD)",                 price:55.00, rating:4.6, reviews:134, dist:"95m",  walkMin:3,  type:"SUV",      fuel:"Gasoline", transmission:"Automatic", seats:5, image:"https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80" },
+];
