@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 // src/app/dashboard/super-admin/cars/edit/page.tsx
 
 import { useTheme } from "@/src/context/ThemeContext";

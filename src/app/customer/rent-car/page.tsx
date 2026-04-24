@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 // src/app/customer/rent-car/page.tsx
 
 import { useTheme } from "@/src/context/ThemeContext";
