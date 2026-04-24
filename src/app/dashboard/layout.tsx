@@ -3,7 +3,7 @@
 // Auth guard for all /dashboard/* pages.
 // Redirects to /auth/login if not signed in as admin.
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAdminAuth } from "@/src/context/AdminAuthContext";
 
@@ -19,5 +19,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!admin) return null;
 
-  return <>{children}</>;
+  return <Suspense fallback={null}>{children}</Suspense>;
 }
