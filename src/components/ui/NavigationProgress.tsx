@@ -16,8 +16,8 @@ export default function NavigationProgress() {
   const [width, setWidth]   = useState(0);
   const prevRef         = useRef(pathname);
   const activeRef       = useRef(false);
-  const tickRef         = useRef<ReturnType<typeof setTimeout>>();
-  const hideRef         = useRef<ReturnType<typeof setTimeout>>();
+  const tickRef         = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const hideRef         = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   function start() {
     clearTimeout(tickRef.current);
