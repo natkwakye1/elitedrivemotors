@@ -16,7 +16,7 @@ export default function CustomerProfilePage() {
   const { customer, logout } = useCustomerAuth();
   const { bookings } = useBookings();
   const { swaps } = useSwaps();
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   const rentals   = bookings.filter(b => b.booking_type !== "buy");
   const purchases = bookings.filter(b => b.booking_type === "buy");

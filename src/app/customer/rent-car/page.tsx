@@ -17,6 +17,7 @@ import { useFavourites } from "@/src/context/FavouritesContext";
 import { CARS } from "@/src/lib/data/cars";
 import { FLEET_DATA } from "@/src/lib/data/fleet";
 import CarGridSkeleton from "@/src/components/ui/Skeleton";
+import DatePicker from "@/src/components/ui/DatePicker";
 
 const LOCATIONS = [
   "Accra Central", "Airport Accra", "East Legon", "Osu, Accra",
@@ -476,24 +477,19 @@ export default function CustomerRentCarPage() {
 
             {/* Dates — 2-column */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-              {(["Start Date", "End Date"] as const).map(lbl => {
-                const val    = lbl === "Start Date" ? startDate : endDate;
-                const setter = lbl === "Start Date" ? setStartDate : setEndDate;
-                return (
-                  <div key={lbl}>
-                    <label style={{ display: "block", marginBottom: 5, fontSize: 10, fontWeight: 700, letterSpacing: 0.9, textTransform: "uppercase", color: t.textMuted }}>
-                      {lbl}
-                    </label>
-                    <input
-                      type="date"
-                      value={val}
-                      onChange={e => setter(e.target.value)}
-                      className="dm-input"
-                      style={{ ...inputStyle(!!val), padding: "8px 10px" }}
-                    />
-                  </div>
-                );
-              })}
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                onChange={setStartDate}
+                placeholder="Pick start date"
+              />
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                onChange={setEndDate}
+                placeholder="Pick end date"
+                min={startDate || undefined}
+              />
             </div>
 
             {/* Add-ons */}

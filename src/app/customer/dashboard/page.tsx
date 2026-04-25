@@ -39,7 +39,7 @@ export default function CustomerDashboard() {
   useEffect(() => {
     if (!customer) router.replace("/customer/login");
   }, [customer, router]);
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   const rentals   = bookings.filter(b => b.booking_type !== "buy");
   const purchases = bookings.filter(b => b.booking_type === "buy");

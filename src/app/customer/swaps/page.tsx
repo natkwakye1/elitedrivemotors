@@ -48,7 +48,7 @@ export default function CustomerSwapsPage() {
   const [status, setStatus] = useState("All");
   const [search, setSearch] = useState("");
   const [panelCollapsed, setPanelCollapsed] = useState(false);
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   const all = swaps;
   const filtered = useMemo(() => all.filter((s: ApiSwap) => {

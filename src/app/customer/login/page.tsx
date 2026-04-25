@@ -101,13 +101,8 @@ export default function CustomerLoginPage() {
 
           <div style={{ flex:1 }}/>
 
-          {/* Demo credentials */}
           <div style={{ padding:"20px 40px 32px", position:"relative", zIndex:3, borderTop:"1px solid rgba(255,255,255,0.08)" }}>
-            <div style={{ fontSize:11, color:"rgba(255,255,255,0.3)", marginBottom:6 }}>Demo credentials:</div>
-            <div style={{ fontSize:11, color:"rgba(255,255,255,0.45)", lineHeight:1.7 }}>
-              kwame@gmail.com · abena@gmail.com · kofi@gmail.com<br/>
-              Password: <span style={{ color:"rgba(255,255,255,0.65)" }}>password123</span>
-            </div>
+            <div style={{ fontSize:11, color:"rgba(255,255,255,0.3)" }}>Use the Quick Login shortcuts on the right to demo the app.</div>
           </div>
         </div>
 

@@ -126,11 +126,11 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
     if (!customer) router.replace("/customer/login");
   }, [customer, router]);
 
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   const handleLogout = () => {
+    router.replace("/customer/login");
     logout();
-    router.push("/customer/login");
   };
 
   const activeConv = conversations.find(c => c.id === activeId) ?? null;

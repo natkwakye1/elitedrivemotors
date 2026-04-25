@@ -5,6 +5,7 @@ import { useTheme } from "@/src/context/ThemeContext";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ic } from "@/src/components/ui/Icons";
+import DatePicker from "@/src/components/ui/DatePicker";
 
 function Input({ label, type = "text", value, onChange, placeholder, t }: any) {
   const [show, setShow] = useState(false);
@@ -191,7 +192,9 @@ export default function RegisterPage() {
                   <Input label="Last Name" value={form.lastName} onChange={(e: any) => set("lastName", e.target.value)} placeholder="Mensah" t={t} />
                 </div>
                 <Input label="Phone Number" value={form.phone} onChange={(e: any) => set("phone", e.target.value)} placeholder="+233 XX XXX XXXX" t={t} />
-                <Input label="Date of Birth" type="date" value={form.dob} onChange={(e: any) => set("dob", e.target.value)} t={t} />
+                <div style={{ marginBottom: 14 }}>
+                  <DatePicker label="Date of Birth" value={form.dob} onChange={(v) => set("dob", v)} placeholder="Select date of birth" />
+                </div>
                 <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
                   <button onClick={() => setStep(1)} style={{ flex: 1, padding: "12px 0", borderRadius: 10, border: `1px solid ${t.border}`, background: t.cardBg, color: t.textSec, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>Back</button>
                   <button onClick={next} style={{ flex: 2, padding: "12px 0", borderRadius: 10, border: "none", background: t.accent, color: t.accentFg, fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>Continue</button>

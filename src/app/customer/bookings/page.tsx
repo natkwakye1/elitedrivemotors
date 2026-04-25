@@ -51,7 +51,7 @@ export default function CustomerBookingsPage() {
   const [status, setStatus] = useState("All");
   const [search, setSearch] = useState("");
   const [panelCollapsed, setPanelCollapsed] = useState(false);
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   const all = bookings;
   const filtered = useMemo(() => all.filter((b: ApiBooking) => {

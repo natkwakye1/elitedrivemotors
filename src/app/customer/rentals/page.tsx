@@ -10,6 +10,7 @@ import { Ic } from "@/src/components/ui/Icons";
 import { useCustomerAuth } from "@/src/context/Customerauthcontext";
 import { useBookings } from "@/src/hooks/useApi";
 import type { ApiBooking } from "@/src/lib/api";
+import DatePicker from "@/src/components/ui/DatePicker";
 
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
@@ -56,7 +57,7 @@ export default function CustomerRentalsPage() {
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo]   = useState("");
   const [panelCollapsed, setPanelCollapsed] = useState(false);
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   // Rentals = all bookings that are not purchases
   const all = bookings.filter(b => b.booking_type !== "buy");
@@ -140,15 +141,8 @@ export default function CustomerRentalsPage() {
 
             <PanelSection title="Date Range" t={t}>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {[["From", dateFrom, setDateFrom], ["To", dateTo, setDateTo]].map(([lbl, val, set]) => (
-                  <div key={lbl as string}>
-                    <div style={{ fontSize: 9, fontWeight: 700, color: t.textMuted, letterSpacing: 1, marginBottom: 4 }}>{lbl as string}</div>
-                    <input type="date" value={val as string} onChange={e => (set as any)(e.target.value)}
-                      style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = t.accent)}
-                      onBlur={e  => (e.target.style.borderColor = t.border)} />
-                  </div>
-                ))}
+                <DatePicker label="From" value={dateFrom} onChange={setDateFrom} placeholder="Start date" />
+                <DatePicker label="To" value={dateTo} onChange={setDateTo} placeholder="End date" min={dateFrom || undefined} />
               </div>
             </PanelSection>
 

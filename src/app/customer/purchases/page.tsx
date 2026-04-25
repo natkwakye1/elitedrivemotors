@@ -51,7 +51,7 @@ export default function CustomerPurchasesPage() {
   const [status, setStatus] = useState("All");
   const [search, setSearch] = useState("");
   const [panelCollapsed, setPanelCollapsed] = useState(false);
-  if (!customer) return null;
+  if (!customer) return <div style={{ position:"fixed", inset:0, background:t.bg }}/>;
 
   // Purchases = bookings with booking_type "buy"
   const all = bookings.filter(b => b.booking_type === "buy");

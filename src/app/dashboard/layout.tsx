@@ -17,7 +17,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [admin, router]);
 
-  if (!admin) return null;
+  if (!admin) return <div style={{ position:"fixed", inset:0, background:"#0a0a0a" }}/>;
+
 
   return <Suspense fallback={null}>{children}</Suspense>;
 }
