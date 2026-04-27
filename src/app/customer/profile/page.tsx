@@ -45,7 +45,7 @@ export default function CustomerProfilePage() {
           </div>
 
           {/* stats */}
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14 }}>
+          <div className="kpi-grid" style={{ gap:14 }}>
             {[
               { label:"Rentals",    value: rentals.length,                                                    icon:(c:string)=>Ic.Rentals(c),  href:"/customer/rentals"   },
               { label:"Purchases",  value: purchases.length,                                                  icon:(c:string)=>Ic.Buy(c),      href:"/customer/purchases" },
@@ -69,7 +69,7 @@ export default function CustomerProfilePage() {
           {/* account details */}
           <div style={{ background:t.cardBg, borderRadius:14, border:`1px solid ${t.border}`, padding:"22px" }}>
             <div style={{ fontSize:13, fontWeight:700, color:t.textPri, marginBottom:16 }}>Account Details</div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
+            <div className="dash-two" style={{ gap:14 }}>
               {[
                 { label:"Full Name",   value:customer.name,    icon:(c:string)=>Ic.Profile(c)  },
                 { label:"Email",       value:customer.email,   icon:(c:string)=>Ic.Contact(c)  },

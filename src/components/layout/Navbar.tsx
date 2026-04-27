@@ -107,7 +107,16 @@ export default function Navbar({ active, setActive, t }: NavbarProps) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [chatOpen,  setChatOpen]  = useState(false);
   const [chatInput, setChatInput] = useState("");
+  const [isMobile,   setIsMobile]  = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const msgEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const { notifications, unread: notifUnread, markRead, markAllRead, dismiss } = useAdminNotifications();
   const { conversations, activeId, setActive: setActiveConv, sendMessage, totalUnread: chatUnread } = useAdminChat();
@@ -163,19 +172,53 @@ export default function Navbar({ active, setActive, t }: NavbarProps) {
           from { opacity: 0; transform: translateX(-18px); }
           to   { opacity: 1; transform: translateX(0);     }
         }
+        @keyframes edm-backdrop-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
       `}</style>
+
+      {/* Mobile backdrop */}
+      {isMobile && drawerOpen && (
+        <div
+          onClick={() => setDrawerOpen(false)}
+          style={{ position:"fixed", inset:0, zIndex:499, background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)", animation:"edm-backdrop-in 0.2s ease" }}
+        />
+      )}
+
+      {/* Mobile hamburger (fixed) */}
+      {isMobile && !drawerOpen && (
+        <button
+          onClick={() => setDrawerOpen(true)}
+          style={{ position:"fixed", top:12, left:12, zIndex:501, width:40, height:40, borderRadius:10, border:`1px solid ${t.border}`, background:t.navBg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", color:t.textMuted, boxShadow:"0 2px 12px rgba(0,0,0,0.2)" }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12h18M3 6h18M3 18h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </button>
+      )}
 
       {/* ── Sidebar ── */}
       <nav style={{
-        width: navWidth,
+        width: isMobile ? 272 : navWidth,
         flexShrink: 0,
         background: t.navBg,
         borderRight: `1px solid ${t.border}`,
         display: "flex", flexDirection: "column",
         height: "100vh",
-        position: "sticky", top: 0,
         overflow: "hidden",
-        transition: "width 0.22s cubic-bezier(0.4,0,0.2,1)",
+        ...(isMobile ? {
+          position: "fixed" as const,
+          top: 0, left: 0, bottom: 0,
+          zIndex: 500,
+          transform: drawerOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.28s cubic-bezier(0.4,0,0.2,1)",
+          boxShadow: drawerOpen ? "4px 0 40px rgba(0,0,0,0.4)" : "none",
+        } : {
+          position: "sticky" as const,
+          top: 0,
+          transition: "width 0.22s cubic-bezier(0.4,0,0.2,1)",
+        }),
       }}>
 
         {/* ── Logo + toggle ── */}
@@ -260,7 +303,7 @@ export default function Navbar({ active, setActive, t }: NavbarProps) {
                 return (
                   <button
                     key={item.label}
-                    onClick={() => navigate(item.label)}
+                    onClick={() => { navigate(item.label); if (isMobile) setDrawerOpen(false); }}
                     title={collapsed ? item.label : undefined}
                     style={{
                       width: "100%", display: "flex", alignItems: "center",

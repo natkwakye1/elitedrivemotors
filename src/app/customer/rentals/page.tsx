@@ -172,7 +172,7 @@ export default function CustomerRentalsPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
               {/* KPI strip */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 4 }}>
+              <div className="kpi-grid" style={{ marginBottom: 4 }}>
                 {[
                   { label: "Total Rentals", value: all.length,                                                         icon: (c: string) => Ic.Rentals(c) },
                   { label: "Active",        value: all.filter(r => r.status === "active" || r.status === "confirmed").length, icon: () => Ic.Check()        },
@@ -208,8 +208,8 @@ export default function CustomerRentalsPage() {
                       style={{ background: t.cardBg, borderRadius: 14, border: `1px solid ${t.border}`, overflow: "hidden", transition: "border-color 0.15s, transform 0.15s" }}
                       onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = t.accent; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-1px)"; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = t.border; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}>
-                      <div style={{ display: "flex" }}>
-                        <div style={{ position: "relative", width: 160, flexShrink: 0, background: dark ? "#111122" : "#f0f0f6" }}>
+                      <div className="card-row" style={{ display: "flex" }}>
+                        <div className="card-img" style={{ position: "relative", width: 160, flexShrink: 0, background: dark ? "#111122" : "#f0f0f6" }}>
                           {r.car?.cover_image_url
                             ? <Image src={r.car.cover_image_url} alt={name} fill sizes="160px" style={{ objectFit: "cover" }} />
                             : <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:t.textMuted }}>No image</div>
@@ -217,7 +217,7 @@ export default function CustomerRentalsPage() {
                           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 55%, " + (dark ? "#1C1C30" : "#ffffff") + " 100%)", pointerEvents: "none" }} />
                           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: sc }} />
                         </div>
-                        <div style={{ flex: 1, padding: "18px 20px" }}>
+                        <div className="card-body" style={{ flex: 1, padding: "18px 20px" }}>
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
                             <div>
                               <div style={{ fontSize: 15, fontWeight: 800, color: t.textPri, marginBottom: 3 }}>{name}</div>
@@ -228,7 +228,7 @@ export default function CustomerRentalsPage() {
                               <span style={{ fontSize: 10, fontWeight: 700, color: sc, background: sc + "18", border: `1px solid ${sc}30`, borderRadius: 20, padding: "3px 10px" }}>{capitalize(r.status)}</span>
                             </div>
                           </div>
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8 }}>
+                          <div className="kpi-grid" style={{ gap: 8 }}>
                             {[{ label:"Start", value:fmtDate(r.start_date) },{ label:"End", value:fmtDate(r.end_date) },{ label:"Pickup", value:r.pickup_location },{ label:"Drop-off", value:r.dropoff_location }].map(row => (
                               <div key={row.label} style={{ background: t.bg, borderRadius: 7, border: `1px solid ${t.border}`, padding: "8px 10px" }}>
                                 <div style={{ fontSize: 9, color: t.textMuted, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 3 }}>{row.label}</div>

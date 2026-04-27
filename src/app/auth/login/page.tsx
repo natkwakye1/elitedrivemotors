@@ -2,7 +2,7 @@
 // src/app/auth/login/page.tsx — Admin login
 
 import { useTheme } from "@/src/context/ThemeContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -66,9 +66,17 @@ export default function AdminLoginPage() {
   const [form, setForm]       = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }));
 
   const panelBg = dark ? "#0a0a0a" : "#111111";
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const submit = async () => {
     if (!form.email || !form.password) {
@@ -104,10 +112,10 @@ export default function AdminLoginPage() {
         background: t.bg, overflow: "hidden",
       }}>
 
-        {/* ── LEFT dark branding panel ── */}
+        {/* ── LEFT dark branding panel — hidden on mobile ── */}
         <div style={{
           width: "44%", flexShrink: 0, background: panelBg,
-          display: "flex", flexDirection: "column",
+          display: isMobile ? "none" : "flex", flexDirection: "column",
           position: "relative", overflow: "hidden",
         }}>
           {/* dot grid */}

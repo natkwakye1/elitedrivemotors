@@ -141,7 +141,7 @@ export default function CustomerSwapsPage() {
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {/* KPI strip */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 4 }}>
+              <div className="kpi-grid" style={{ marginBottom: 4 }}>
                 {[
                   { label: "Pending",   value: all.filter((s: ApiSwap) => s.status === "pending").length,   color: "#F59E0B" },
                   { label: "Approved",  value: all.filter((s: ApiSwap) => s.status === "approved").length,  color: "#10B981" },

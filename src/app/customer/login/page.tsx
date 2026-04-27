@@ -1,7 +1,7 @@
 "use client";
 // src/app/customer/login/page.tsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -20,13 +20,21 @@ export default function CustomerLoginPage() {
   const [showPw, setShowPw]     = useState(false);
   const [error, setError]       = useState("");
   const [loading, setLoading]   = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) { setError("Please fill in all fields."); return; }
     setLoading(true); setError("");
     const result = await login(email, password);
     setLoading(false);
-    if (result.ok) router.push("/customer/dashboard");
+    if (result.ok) router.push(result.redirect ?? "/customer/dashboard");
     else setError(result.error ?? "Login failed.");
   };
 
@@ -42,7 +50,7 @@ export default function CustomerLoginPage() {
       <div style={{ display:"flex", height:"100vh", fontFamily:"'DM Sans',sans-serif", overflow:"hidden" }}>
 
         {/* ── LEFT dark panel ── */}
-        <div style={{ width:"44%", flexShrink:0, background:panelBg, display:"flex", flexDirection:"column", position:"relative", overflow:"hidden" }}>
+        <div style={{ width:"44%", flexShrink:0, background:panelBg, display: isMobile ? "none" : "flex", flexDirection:"column", position:"relative", overflow:"hidden" }}>
 
           {/* dot grid */}
           <div style={{ position:"absolute", inset:0, opacity:0.04, pointerEvents:"none", zIndex:0 }}>
@@ -218,7 +226,7 @@ export default function CustomerLoginPage() {
                         setLoading(true);
                         const result = await login(c.email, "password123");
                         setLoading(false);
-                        if (result.ok) router.push("/customer/dashboard");
+                        if (result.ok) router.push(result.redirect ?? "/customer/dashboard");
                         else setError(result.error ?? "Login failed.");
                       }}
                       style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", borderRadius:10, border:`1px solid ${t.border}`, background:t.cardBg, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.15s", textAlign:"left" }}

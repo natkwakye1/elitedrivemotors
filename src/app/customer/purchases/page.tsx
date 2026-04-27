@@ -146,7 +146,7 @@ export default function CustomerPurchasesPage() {
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {/* KPI strip */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 4 }}>
+              <div className="kpi-3" style={{ marginBottom: 4 }}>
                 {[
                   { label: "Total Purchased", value: all.length,                                                                      icon: (c:string) => Ic.Buy(c)     },
                   { label: "Completed",        value: all.filter(p => p.status === "completed").length,                                icon: () => Ic.Check()            },
@@ -177,15 +177,15 @@ export default function CustomerPurchasesPage() {
                       style={{ background: t.cardBg, borderRadius: 14, border: `1px solid ${t.border}`, overflow: "hidden", transition: "border-color 0.15s, transform 0.15s" }}
                       onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = t.accent; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-1px)"; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = t.border; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}>
-                      <div style={{ display: "flex" }}>
-                        <div style={{ position: "relative", width: 200, flexShrink: 0, background: dark ? "#111122" : "#f0f0f6" }}>
+                      <div className="card-row" style={{ display: "flex" }}>
+                        <div className="card-img" style={{ position: "relative", width: 200, flexShrink: 0, background: dark ? "#111122" : "#f0f0f6" }}>
                           {p.car?.cover_image_url
                             ? <Image src={p.car.cover_image_url} alt={name} fill sizes="200px" style={{ objectFit: "cover" }} />
                             : <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, color:t.textMuted }}>No image</div>
                           }
                           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 60%, " + (dark ? "#1C1C30" : "#fff") + " 100%)", pointerEvents: "none" }} />
                         </div>
-                        <div style={{ flex: 1, padding: "20px 22px" }}>
+                        <div className="card-body" style={{ flex: 1, padding: "20px 22px" }}>
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
                             <div>
                               <div style={{ fontSize: 16, fontWeight: 800, color: t.textPri, marginBottom: 4 }}>{name}</div>
@@ -196,7 +196,7 @@ export default function CustomerPurchasesPage() {
                               <span style={{ fontSize: 10, fontWeight: 700, color: sc, background: sc + "18", border: `1px solid ${sc}30`, borderRadius: 20, padding: "3px 10px" }}>{capitalize(p.status)}</span>
                             </div>
                           </div>
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10 }}>
+                          <div className="kpi-3" style={{ gap: 10 }}>
                             {[{ label:"Collection", value:p.pickup_location },{ label:"Delivery", value:p.dropoff_location ?? "—" },{ label:"Plate", value:p.car?.plate_number ?? "—" }].map(row => (
                               <div key={row.label} style={{ background: t.bg, borderRadius: 8, border: `1px solid ${t.border}`, padding: "9px 10px" }}>
                                 <div style={{ fontSize: 9, color: t.textMuted, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 3 }}>{row.label}</div>

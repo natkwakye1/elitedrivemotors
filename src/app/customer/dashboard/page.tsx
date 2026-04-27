@@ -64,10 +64,11 @@ export default function CustomerDashboard() {
         </button>
       }
     >
-      <div style={{ flex:1, overflowY:"auto", padding:"24px", background:t.bg }}>
+      <div style={{ flex:1, overflowY:"auto", background:t.bg }}>
+        <div className="dash-pad">
 
         {/* ── KPI cards ── */}
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20 }}>
+        <div className="kpi-grid" style={{ marginBottom:16 }}>
           {[
             { label:"Total Rentals",  value: isLoading ? "—" : `${rentals.length}`,         icon:(c:string)=>Ic.Rentals(c),  href:"/customer/rentals"   },
             { label:"Purchases",      value: isLoading ? "—" : `${purchases.length}`,       icon:(c:string)=>Ic.Buy(c),      href:"/customer/purchases" },
@@ -90,7 +91,7 @@ export default function CustomerDashboard() {
           ))}
         </div>
 
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:18, marginBottom:18 }}>
+        <div className="dash-two" style={{ marginBottom:16 }}>
 
           {/* active rental highlight */}
           <div style={{ background:t.cardBg, borderRadius:14, border:`1px solid ${t.border}`, overflow:"hidden" }}>
@@ -234,6 +235,7 @@ export default function CustomerDashboard() {
             )}
           </div>
         </div>
+        </div>{/* dash-pad */}
       </div>
     </CustomerShell>
   );

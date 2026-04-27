@@ -4,7 +4,7 @@
 // Falls back to mock credentials when the API is unreachable (dev mode).
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { authApi, tokenStore, type ApiUser } from "@/src/lib/api";
+import { authApi, tokenStore, bookingsApi, type ApiUser } from "@/src/lib/api";
 
 export interface Customer {
   id:        string;
@@ -17,6 +17,7 @@ export interface Customer {
   role:      string;
   wallet_balance: number;
   avatar_url?: string;
+  isFirstTime?: boolean; // true if no transactions yet
 }
 
 // ── Dev fallback customers (used when API is unreachable) ─────────────────────
@@ -29,7 +30,7 @@ export const MOCK_CUSTOMERS = [
 interface AuthCtx {
   customer:  Customer | null;
   loading:   boolean;
-  login:     (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  login:     (email: string, password: string) => Promise<{ ok: boolean; error?: string; redirect?: string }>;
   logout:    () => void;
   refresh:   () => Promise<void>;
 }
@@ -42,7 +43,7 @@ const CustomerAuthContext = createContext<AuthCtx>({
   refresh:  async () => {},
 });
 
-function apiUserToCustomer(user: ApiUser): Customer {
+function apiUserToCustomer(user: ApiUser, isFirstTime = false): Customer {
   const initials = `${user.first_name?.[0] ?? ""}${user.last_name?.[0] ?? ""}`.toUpperCase();
   return {
     id:             user.id,
@@ -51,10 +52,11 @@ function apiUserToCustomer(user: ApiUser): Customer {
     phone:          user.phone || "",
     avatar:         initials || "?",
     avatar_url:     user.avatar_url,
-    plan:           "Standard",           // extend with subscription tier later
+    plan:           "Standard",
     joined:         new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
     role:           user.role,
     wallet_balance: user.wallet_balance ?? 0,
+    isFirstTime,
   };
 }
 
@@ -71,7 +73,7 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<{ ok: boolean; error?: string }> => {
+  const login = async (email: string, password: string): Promise<{ ok: boolean; error?: string; redirect?: string }> => {
     try {
       const data = await authApi.login(email, password);
       const user: ApiUser = data.user;
@@ -79,16 +81,25 @@ export function CustomerAuthProvider({ children }: { children: ReactNode }) {
         tokenStore.clear();
         return { ok: false, error: "This account is not a customer account." };
       }
-      setCustomer(apiUserToCustomer(user));
-      return { ok: true };
+      // Detect first-time: no bookings means new customer → send to browse cars
+      let isFirstTime = false;
+      try {
+        const bookings = await bookingsApi.list();
+        isFirstTime = bookings.length === 0;
+      } catch { isFirstTime = false; }
+      const cust = apiUserToCustomer(user, isFirstTime);
+      setCustomer(cust);
+      return { ok: true, redirect: isFirstTime ? "/cars" : "/customer/dashboard" };
     } catch (err: any) {
       const detail = err?.response?.data?.detail;
-      // Dev fallback: if API is down, allow mock customer login
+      // Dev fallback
       if (!detail && password === "password123") {
         const found = MOCK_CUSTOMERS.find(c => c.email.toLowerCase() === email.toLowerCase());
         if (found) {
-          setCustomer({ ...found, role: "customer", wallet_balance: 0 });
-          return { ok: true };
+          // Mock: CUS-001 (Kwame) has transactions, others are first-time
+          const isFirstTime = found.id !== "CUS-001";
+          setCustomer({ ...found, role: "customer", wallet_balance: 0, isFirstTime });
+          return { ok: true, redirect: isFirstTime ? "/cars" : "/customer/dashboard" };
         }
       }
       return { ok: false, error: detail || "Login failed. Please try again." };

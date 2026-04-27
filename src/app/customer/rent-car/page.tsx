@@ -476,7 +476,7 @@ export default function CustomerRentCarPage() {
             </Field>
 
             {/* Dates — 2-column */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+            <div className="info-two" style={{ marginBottom: 12 }}>
               <DatePicker
                 label="Start Date"
                 value={startDate}

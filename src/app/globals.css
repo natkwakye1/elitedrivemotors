@@ -23,4 +23,122 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+/* ── EDM Motion System ───────────────────────────────────────────────────── */
+
+@keyframes edm-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes edm-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes edm-scale-in {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes edm-slide-left {
+  from { opacity: 0; transform: translateX(-22px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes edm-slide-right {
+  from { opacity: 0; transform: translateX(22px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes edm-slide-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes edm-float {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%       { transform: translateY(-14px) rotate(-1.5deg); }
+}
+@keyframes edm-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.8); }
+}
+@keyframes edm-bounce-in {
+  0%  { opacity: 0; transform: scale(0.55); }
+  65% { transform: scale(1.07); }
+  100%{ opacity: 1; transform: scale(1); }
+}
+@keyframes edm-shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+@keyframes edm-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes edm-drawer-in {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+/* ── Utility animation classes ───────────────────────────────────────────── */
+.edm-fade-up   { animation: edm-fade-up  0.55s ease both; }
+.edm-fade-in   { animation: edm-fade-in  0.4s  ease both; }
+.edm-scale-in  { animation: edm-scale-in 0.4s  ease both; }
+.edm-slide-left{ animation: edm-slide-left  0.45s ease both; }
+.edm-float     { animation: edm-float 4.5s ease-in-out infinite; }
+.edm-bounce-in { animation: edm-bounce-in 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+
+/* Stagger delay helpers */
+.edm-d1 { animation-delay: 0.06s; }
+.edm-d2 { animation-delay: 0.12s; }
+.edm-d3 { animation-delay: 0.18s; }
+.edm-d4 { animation-delay: 0.24s; }
+.edm-d5 { animation-delay: 0.30s; }
+.edm-d6 { animation-delay: 0.36s; }
+
+/* ── Scroll Reveal ───────────────────────────────────────────────────────── */
+.edm-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.edm-reveal.edm-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.edm-reveal-scale {
+  opacity: 0;
+  transform: scale(0.93);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.edm-reveal-scale.edm-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.edm-reveal-left {
+  opacity: 0;
+  transform: translateX(-22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.edm-reveal-left.edm-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.edm-reveal-right {
+  opacity: 0;
+  transform: translateX(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.edm-reveal-right.edm-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Mobile safe area ────────────────────────────────────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .edm-safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* ── Touch target helpers ────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  button, [role="button"] { min-height: 40px; }
 }

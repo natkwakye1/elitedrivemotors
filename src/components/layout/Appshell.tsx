@@ -49,6 +49,12 @@ export default function AppShell({ active, children }: AppShellProps) {
           {children}
         </main>
       </div>
+      <style>{`
+        @media (max-width: 767px) {
+          /* push admin page topbars right of the hamburger button */
+          main > div:first-child { padding-left: 56px !important; }
+        }
+      `}</style>
     </>
   );
 }

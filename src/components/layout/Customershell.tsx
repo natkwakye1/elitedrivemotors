@@ -101,6 +101,8 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
   const [notifOpen, setNotifOpen] = useState(false);
   const [chatOpen,  setChatOpen]  = useState(false);
   const [chatInput, setChatInput] = useState("");
+  const [isMobile,   setIsMobile]  = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const navWidth = collapsed ? 52 : 220;
 
@@ -120,6 +122,14 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
   useEffect(() => {
     NAV_GROUPS.flatMap(g => g.items).forEach(item => router.prefetch(item.href));
   }, [router]);
+
+  /* ── Mobile breakpoint detection ─────────────────────────────────────── */
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   /* ── Auth guard ─────────────────────────────────────────────────────────── */
   useEffect(() => {
@@ -169,22 +179,58 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
           to   { transform: translateY(0);    opacity: 1; }
         }
         @keyframes pageFadeIn {
-          from { opacity: 0; transform: translateY(5px); }
-          to   { opacity: 1; transform: translateY(0);   }
+          from { opacity: 0; }
+          to   { opacity: 1; }
         }
-        button { transition: transform 0.1s ease; }
-        button:active { transform: scale(0.96); }
+        @keyframes edm-backdrop-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        .kpi-grid  { display:grid; gap:10px; grid-template-columns:repeat(4,1fr); }
+        .kpi-3     { display:grid; gap:10px; grid-template-columns:repeat(3,1fr); }
+        .dash-two  { display:grid; gap:16px; grid-template-columns:1fr 1fr; }
+        .info-two  { display:grid; gap:8px;  grid-template-columns:1fr 1fr; }
+        .dash-pad  { padding:20px; }
+        @media(max-width:767px){
+          .kpi-grid   { grid-template-columns:repeat(2,1fr); }
+          .kpi-3      { grid-template-columns:repeat(2,1fr); }
+          .dash-two   { grid-template-columns:1fr; }
+          .info-two   { grid-template-columns:1fr 1fr; }
+          .dash-pad   { padding:12px; }
+          .card-row   { flex-direction:column!important; }
+          .card-img   { width:100%!important; height:180px!important; }
+          .card-body  { padding:14px 16px!important; }
+        }
+        button { transition: opacity 0.1s ease; }
+        button:active { opacity: 0.75; }
       `}</style>
 
       <div style={{ display:"flex", height:"100vh", fontFamily:"'DM Sans',sans-serif", background:t.bg, overflow:"hidden" }}>
 
-        {/* ── LEFT NAVBAR ─────────────────────────────────────────────────── */}
+        {/* Mobile backdrop ─────────────────────────────────────────────────── */}
+      {isMobile && drawerOpen && (
+        <div
+          onClick={() => setDrawerOpen(false)}
+          style={{ position:"fixed", inset:0, zIndex:499, background:"rgba(0,0,0,0.55)", backdropFilter:"blur(3px)", animation:"edm-backdrop-in 0.2s ease" }}
+        />
+      )}
+
+      {/* ── LEFT NAVBAR ─────────────────────────────────────────────────── */}
         <div style={{
-          width: navWidth, flexShrink: 0,
+          width: isMobile ? 272 : navWidth, flexShrink: 0,
           background: t.cardBg, borderRight: `1px solid ${t.border}`,
           display: "flex", flexDirection: "column",
           overflow: "hidden",
-          transition: "width 0.22s cubic-bezier(0.4,0,0.2,1)",
+          ...(isMobile ? {
+            position: "fixed" as const,
+            top: 0, left: 0, bottom: 0,
+            zIndex: 500,
+            transform: drawerOpen ? "translateX(0)" : "translateX(-100%)",
+            transition: "transform 0.28s cubic-bezier(0.4,0,0.2,1)",
+            boxShadow: drawerOpen ? "4px 0 40px rgba(0,0,0,0.4)" : "none",
+          } : {
+            transition: "width 0.22s cubic-bezier(0.4,0,0.2,1)",
+          }),
         }}>
 
           {/* Logo + collapse toggle */}
@@ -266,7 +312,7 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
                   return (
                     <button
                       key={item.href}
-                      onClick={() => router.push(item.href)}
+                      onClick={() => { router.push(item.href); if (isMobile) setDrawerOpen(false); }}
                       title={collapsed ? item.label : undefined}
                       style={{
                         width: "100%", display: "flex", alignItems: "center",
@@ -330,16 +376,31 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
         <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", minWidth:0 }}>
 
           {/* TopBar */}
-          <div style={{ height:52, flexShrink:0, borderBottom:`1px solid ${t.border}`, background:t.cardBg, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 20px" }}>
-            <div style={{ display:"flex", alignItems:"baseline", gap:10, minWidth:0 }}>
-              <span style={{ fontSize:14, fontWeight:800, color:t.textPri, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{title}</span>
-              {subtitle && <span style={{ fontSize:11, color:t.textMuted, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{subtitle}</span>}
+          <div style={{ height:52, flexShrink:0, borderBottom:`1px solid ${t.border}`, background:t.cardBg, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 14px", gap:8 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, minWidth:0, flex:1 }}>
+              {isMobile && (
+                <button
+                  onClick={() => setDrawerOpen(o => !o)}
+                  style={{ width:36, height:36, borderRadius:8, border:`1px solid ${t.border}`, background:"transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", flexShrink:0, color:t.textMuted, transition:"border-color 0.15s" }}
+                  onMouseEnter={e=>(e.currentTarget.style.borderColor=t.accent)}
+                  onMouseLeave={e=>(e.currentTarget.style.borderColor=t.border)}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12h18M3 6h18M3 18h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </button>
+              )}
+              <div style={{ display:"flex", alignItems:"baseline", gap:6, minWidth:0, overflow:"hidden" }}>
+                <span style={{ fontSize:14, fontWeight:800, color:t.textPri, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{title}</span>
+                {subtitle && !isMobile && <span style={{ fontSize:11, color:t.textMuted, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{subtitle}</span>}
+              </div>
             </div>
 
-            <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-              {actions}
+            <div style={{ display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
+              {!isMobile && actions}
 
-              {/* Favourites heart button */}
+              {/* Favourites heart button — desktop only */}
+              {!isMobile && (
               <button
                 onClick={() => router.push("/customer/favourites")}
                 title="My Favourites"
@@ -349,8 +410,10 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
               >
                 <HeartIcon filled={pathname === "/customer/favourites"} />
               </button>
+              )}
 
-              {/* Chat button */}
+              {/* Chat button — desktop only */}
+              {!isMobile && (
               <button
                 onClick={() => { setChatOpen(o => !o); setNotifOpen(false); }}
                 title="Messages"
@@ -363,6 +426,7 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
                   <span style={{ position:"absolute", top:5, right:5, width:8, height:8, borderRadius:"50%", background:"#3B82F6", border:`1.5px solid ${t.cardBg}` }}/>
                 )}
               </button>
+              )}
 
               {/* Notification bell button */}
               <div ref={notifRef} style={{ position: "relative" }}>
@@ -383,7 +447,7 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
                 {notifOpen && (
                   <div
                     style={{
-                      position: "fixed", top: 52, right: 60, width: 340, zIndex: 200,
+                      position: "fixed", top: 52, right: isMobile ? 0 : 60, left: isMobile ? 0 : "auto", width: isMobile ? "100%" : 340, zIndex: 200,
                       background: t.cardBg, border: `1px solid ${t.border}`,
                       borderRadius: 14, overflow: "hidden",
                       boxShadow: dark ? "0 16px 48px rgba(0,0,0,0.6)" : "0 16px 48px rgba(0,0,0,0.14)",
@@ -474,8 +538,8 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
                 )}
               </div>
 
-              {/* Theme toggle */}
-              <div
+              {/* Theme toggle — desktop only */}
+              {!isMobile && <div
                 onClick={() => setDark(!dark)}
                 title={dark ? "Switch to light mode" : "Switch to dark mode"}
                 style={{
@@ -505,7 +569,7 @@ export default function CustomerShell({ children, title, subtitle, actions }: Pr
                     <span style={{ fontSize: 11, fontWeight: 600, color: "#0a0a0a" }}>Dark</span>
                   </>
                 )}
-              </div>
+              </div>}
 
               {/* Profile avatar */}
               <div

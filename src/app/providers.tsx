@@ -9,27 +9,30 @@ import { ChatProvider }               from "@/src/context/ChatContext";
 import { FavouritesProvider }         from "@/src/context/FavouritesContext";
 import { AdminNotificationProvider }  from "@/src/context/AdminNotificationContext";
 import { AdminChatProvider }          from "@/src/context/AdminChatContext";
+import { SaasProvider }               from "@/src/context/SaasContext";
 import RouteProgress                  from "@/src/components/ui/RouteProgress";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <RouteProgress />
-      <AdminAuthProvider>
-        <CustomerAuthProvider>
-          <NotificationProvider>
-            <ChatProvider>
-              <FavouritesProvider>
-                <AdminNotificationProvider>
-                  <AdminChatProvider>
-                    {children}
-                  </AdminChatProvider>
-                </AdminNotificationProvider>
-              </FavouritesProvider>
-            </ChatProvider>
-          </NotificationProvider>
-        </CustomerAuthProvider>
-      </AdminAuthProvider>
+      <SaasProvider>
+        <AdminAuthProvider>
+          <CustomerAuthProvider>
+            <NotificationProvider>
+              <ChatProvider>
+                <FavouritesProvider>
+                  <AdminNotificationProvider>
+                    <AdminChatProvider>
+                      {children}
+                    </AdminChatProvider>
+                  </AdminNotificationProvider>
+                </FavouritesProvider>
+              </ChatProvider>
+            </NotificationProvider>
+          </CustomerAuthProvider>
+        </AdminAuthProvider>
+      </SaasProvider>
     </ThemeProvider>
   );
 }
