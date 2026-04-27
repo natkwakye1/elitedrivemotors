@@ -60,11 +60,11 @@ const MOCK_DEALERS = [
   { name:"Takoradi Motors",  city:"Takoradi",   cars:23, init:"TM" },
 ];
 
-const FEATURED_IDS  = [1,7,10,3,5,11,14,12,13,15];
+const FEATURED_IDS  = [1,7,10,3,5,11,14,12];
 const SALE_PRICES: Record<number,string> = {
   1:"GHS 152,000", 3:"GHS 165,000",  5:"GHS 318,000",
   7:"GHS 416,000", 10:"GHS 232,000", 11:"GHS 269,000",
-  12:"GHS 385,000",13:"GHS 310,000", 14:"GHS 428,000", 15:"GHS 850,000",
+  12:"GHS 385,000",14:"GHS 428,000",
 };
 
 // ── Scroll-reveal helper ──────────────────────────────────────────────────────
@@ -211,9 +211,9 @@ export default function LandingPage() {
         .orb-b { position:absolute; border-radius:50%; pointer-events:none; animation:driftB 22s ease-in-out infinite; }
         .stat-line { transform-origin:left; animation:lineGrow 0.8s cubic-bezier(0.16,1,0.3,1) both; }
         @media (max-width:767px) { .float-car { animation:none !important; } }
-        .fleet-grid { display:grid; gap:20px; grid-template-columns:repeat(5,1fr); }
-        @media (max-width:1100px) { .fleet-grid { grid-template-columns:repeat(3,1fr); } }
-        @media (max-width:700px)  { .fleet-grid { grid-template-columns:repeat(2,1fr); gap:12px; } }
+        .fleet-grid { display:grid; gap:20px; grid-template-columns:repeat(4,1fr); grid-auto-rows:300px; }
+        @media (max-width:1000px) { .fleet-grid { grid-template-columns:repeat(2,1fr); grid-auto-rows:300px; } }
+        @media (max-width:600px)  { .fleet-grid { grid-template-columns:repeat(2,1fr); gap:12px; grid-auto-rows:260px; } }
       `}</style>
 
       {/* ── NAVBAR ── */}
@@ -524,29 +524,31 @@ export default function LandingPage() {
           </RevealDiv>
           <div className="fleet-grid">
             {featuredCars.map((car,i) => (
-              <RevealDiv key={car.id} delay={i*60}>
-                <div className="c-card" style={{ background:CARD, borderRadius:14, border:`1px solid ${BORDER}`, overflow:"hidden", cursor:"pointer" }} onClick={()=>router.push("/cars")}>
-                  <div style={{ position:"relative", height:150, background:dark?"#1a1a1a":"#e8e8e8", overflow:"hidden" }}>
-                    <Image src={car.image} alt={car.name} fill sizes="260px" style={{ objectFit:"cover" }}/>
+              <RevealDiv key={car.id} delay={i*60} style={{ height:"100%" }}>
+                <div className="c-card" style={{ background:CARD, borderRadius:14, border:`1px solid ${BORDER}`, overflow:"hidden", cursor:"pointer", height:"100%", display:"flex", flexDirection:"column" }} onClick={()=>router.push("/cars")}>
+                  <div style={{ position:"relative", height:170, flexShrink:0, background:dark?"#1a1a1a":"#e8e8e8", overflow:"hidden" }}>
+                    <Image src={car.image} alt={car.name} fill sizes="300px" style={{ objectFit:"cover" }}/>
                     <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(0,0,0,0.45) 0%,transparent 55%)", pointerEvents:"none" }}/>
                     <span style={{ position:"absolute", top:10, left:10, fontSize:9, fontWeight:700, color:"#10B981", background:"rgba(16,185,129,0.15)", border:"1px solid rgba(16,185,129,0.3)", borderRadius:20, padding:"3px 9px" }}>Available</span>
                   </div>
-                  <div style={{ padding:"14px 16px" }}>
-                    <div style={{ fontSize:14, fontWeight:700, color:HEAD, marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{car.name}</div>
-                    <div style={{ fontSize:11, color:MUTED, marginBottom:12, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{car.spec}</div>
-                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                      <div>
-                        <div style={{ fontSize:9, color:MUTED, marginBottom:1 }}>Rent from</div>
-                        <div style={{ fontSize:15, fontWeight:800, color:HEAD }}>GHS {car.price*6}<span style={{ fontSize:10, color:MUTED, fontWeight:400 }}>/day</span></div>
-                      </div>
-                      <div style={{ textAlign:"right" }}>
-                        <div style={{ fontSize:9, color:MUTED, marginBottom:1 }}>Buy from</div>
-                        <div style={{ fontSize:13, fontWeight:700, color:HEAD }}>{SALE_PRICES[car.id] ?? "—"}</div>
+                  <div style={{ padding:"14px 16px", flex:1, display:"flex", flexDirection:"column", justifyContent:"space-between", overflow:"hidden" }}>
+                    <div>
+                      <div style={{ fontSize:14, fontWeight:700, color:HEAD, marginBottom:4, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{car.name}</div>
+                      <div style={{ fontSize:11, color:MUTED, marginBottom:12, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{car.spec}</div>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                        <div>
+                          <div style={{ fontSize:9, color:MUTED, marginBottom:1 }}>Rent from</div>
+                          <div style={{ fontSize:15, fontWeight:800, color:HEAD }}>GHS {car.price*6}<span style={{ fontSize:10, color:MUTED, fontWeight:400 }}>/day</span></div>
+                        </div>
+                        <div style={{ textAlign:"right" }}>
+                          <div style={{ fontSize:9, color:MUTED, marginBottom:1 }}>Buy from</div>
+                          <div style={{ fontSize:13, fontWeight:700, color:HEAD }}>{SALE_PRICES[car.id] ?? "—"}</div>
+                        </div>
                       </div>
                     </div>
-                    <div style={{ marginTop:12, display:"flex", gap:6, flexWrap:"wrap" }}>
+                    <div style={{ marginTop:10, display:"flex", gap:6, flexWrap:"nowrap", overflow:"hidden" }}>
                       {[car.fuel,car.transmission,car.type].map(tag => (
-                        <span key={tag} style={{ fontSize:9, fontWeight:600, color:MUTED, background:SUBTLE, borderRadius:6, padding:"3px 8px", border:`1px solid ${BORDER}` }}>{tag}</span>
+                        <span key={tag} style={{ fontSize:9, fontWeight:600, color:MUTED, background:SUBTLE, borderRadius:6, padding:"3px 8px", border:`1px solid ${BORDER}`, whiteSpace:"nowrap" }}>{tag}</span>
                       ))}
                     </div>
                   </div>
