@@ -1,5 +1,6 @@
 "use client";
 // src/app/company/portal/finance/page.tsx
+export const dynamic = "force-dynamic";
 
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/src/context/ThemeContext";

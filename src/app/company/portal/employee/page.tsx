@@ -1,5 +1,6 @@
 "use client";
 // src/app/company/portal/employee/page.tsx
+export const dynamic = "force-dynamic";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";

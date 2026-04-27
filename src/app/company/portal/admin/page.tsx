@@ -1,6 +1,7 @@
 "use client";
 // src/app/company/portal/admin/page.tsx
 // Reusable portal — same URL for every dealership admin. Content driven by SaasContext.
+export const dynamic = "force-dynamic";
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";

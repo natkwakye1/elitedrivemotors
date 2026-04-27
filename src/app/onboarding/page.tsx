@@ -1,7 +1,7 @@
 "use client";
 // src/app/onboarding/page.tsx
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "@/src/context/ThemeContext";
 import { useSaas } from "@/src/context/SaasContext";
@@ -28,6 +28,10 @@ const STEPS = [
 ];
 
 export default function OnboardingPage() {
+  return <Suspense><OnboardingInner /></Suspense>;
+}
+
+function OnboardingInner() {
   const router       = useRouter();
   const searchParams = useSearchParams();
   const { dark } = useTheme();
